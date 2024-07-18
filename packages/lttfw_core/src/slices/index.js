@@ -1,0 +1,5 @@
+export { default as routes } from './routes'
+export { default as i18n } from './i18n'
+export { default as settings } from './settings'
+export { default as storage } from './storage'
+export { default as uppy } from './uppy'

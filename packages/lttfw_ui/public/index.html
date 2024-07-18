@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<title><%= htmlWebpackPlugin.options.title %></title>
+<style>
+  :root {
+    --app-height: 100%;
+  }
+  * {
+    box-sizing: border-box;
+  }
+  body, html {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    overflow-x: hidden;
+    overflow-y: hidden;
+    height: var(--app-height);
+  }
+
+  #root {
+    width: 100%;
+    height: 100%;
+    /*min-height: 100%;*/
+    /*max-height: 100%;*/
+    overflow-x: hidden;
+    overflow-y: hidden;
+    display: flex;
+    flex-direction: column;
+    background-color: #fbfbfb;
+  }
+ 
+  .loading {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .sbl-circ {
+    height: 32px;
+    width: 32px;
+    color: #d7d7d7;
+    position: relative;
+    display: inline-block;
+    border: 4px solid;
+    border-radius: 50%;
+    border-top-color: transparent;
+    animation: rotate 1s linear infinite;
+  }
+
+  .sbl-circ.warning {
+    color: #ffdb1b;
+  }
+  .sbl-circ.error {
+    color: #f04821;
+  }
+  .sbl-circ.pending {
+    color: #15b736;
+  }
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0);
+    }
+    100% {
+      transform: rotate(360deg); 
+    } 
+  }
+
+  .horizontal > .reflex-splitter {
+    height: 0 !important;
+  }
+
+  .vertical > .reflex-splitter {
+    width: 0 !important;
+  }
+
+  @font-face {
+    font-family: 'd Dihapus 404';
+    font-style: normal;
+    font-weight: 400;
+    src: local('d Dihapus 404'), url('/assets/fonts/Dihapus404.woff') format('woff');
+  }
+
+  #root, 
+  .MuiTableContainer-root, 
+  .MuiPaper-root,
+  .MuiDialogTitle-root, 
+  .MuiDialogContent-root,
+  .MuiDialogActions-root,
+  .MuiButtonBase-root {
+    font-family: 'Noto Sans TC' !important;
+  }
+
+  .select2-container.select2-container--open {
+    z-index: 1300;
+  }
+
+  th:empty::before,td:empty::before{
+    content:'\00a0';
+    visibility:hidden;
+  }
+
+</style>
+<% htmlWebpackPlugin.options.styles.forEach(function(file) { %>
+<%if (htmlWebpackPlugin.options.env.NODE_ENV == 'development') { %><link rel="stylesheet" href="<%= file[0] %>" /><% } else { %><link rel="stylesheet" href="<%= file[1] %>" /><% } %><% }); %>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/default.min.css">
+</head>
+<body>
+<div id="root">
+  <div class="loading">
+    <div class="sbl-circ"></div>
+  </div>
+</div>
+<% htmlWebpackPlugin.options.scripts.forEach(function(file) { %>
+<%if (htmlWebpackPlugin.options.env.NODE_ENV == 'development') { %><script src="<%= file[0] %>"></script><% } else { %><script src="<%= file[1] %>"></script><% } %><% }); %>
+</body>
+</html>

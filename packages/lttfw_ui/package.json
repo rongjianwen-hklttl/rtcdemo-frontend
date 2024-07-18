@@ -1,0 +1,21 @@
+{
+  "private": true,
+  "name": "@lttfw/ui",
+  "version": "0.1.0",
+  "main": "./src/index.js",
+  "scripts": {
+    "format": "prettier --loglevel warn --write \"src/****/*.{jsx,js}\"",
+    "dev": "cross-env NODE_ENV=development webpack serve --config=config/webpack.config.dev.js",
+    "test": "cross-env NODE_ENV=development webpack serve --config=config/webpack.config.test.js",
+    "build:dev": "cross-env NODE_ENV=development webpack --config=config/webpack.config.dev.js",
+    "build:test": "cross-env NODE_ENV=development webpack --config=config/webpack.config.test.js",
+    "build:prd": "cross-env NODE_ENV=production webpack --config=config/webpack.config.prd.js",
+    "build:dev:exts": "cross-env NODE_ENV=development webpack --config=config/webpack.config.dev.exts.js",
+    "build:test:exts": "cross-env NODE_ENV=development webpack --config=config/webpack.config.test.exts.js",
+    "build:prd:exts": "cross-env NODE_ENV=production webpack --config=config/webpack.config.prd.exts.js"
+  },
+  "dependencies": {
+    "@lttfw/ckeditor5": "^1.0.0",
+    "@lttfw/core": "^0.1.0"
+  }
+}

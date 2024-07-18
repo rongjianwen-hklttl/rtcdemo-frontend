@@ -1,0 +1,195 @@
+import React from 'react'
+import { useSelector } from 'react-redux'
+
+import { v4 as uuidv4 } from 'uuid'
+import _ from 'lodash'
+import moment from 'moment'
+
+import { useMobile } from '@lttfw/core/src/helpers'
+
+import { useTheme } from '@mui/material'
+import Box from '@mui/material/Box'
+import TextField from '@mui/material/TextField'
+import InputAdornment from '@mui/material/InputAdornment'
+
+import Flatpickr from 'react-flatpickr'
+
+export default function DatetimePicker(props) {
+  const themeName = useSelector((state) => state.settings.themeName)
+
+  let {
+    sx,
+    mode = null,
+    value,
+    onChange,
+    onInit,
+    options = {
+      display: {},
+      moment: {},
+      flatpickr: {}
+    },
+    plugins,
+    ...rest
+  } = props
+  
+  let {
+    display: displayOptions = {},
+    moment: momentOptions = {},
+    flatpickr: flatpickrOptions = {}
+  } = _.cloneDeep(options)
+  if (!momentOptions.dateFormat) {
+    momentOptions.dateFormat = 'YYYY-MM-DD HH:mm:ss'
+  }
+  if (!flatpickrOptions.dateFormat) {
+    flatpickrOptions.dateFormat = 'Y-m-d H:i:s'
+  }
+  if (!displayOptions.dateFormat) {
+    displayOptions.dateFormat = momentOptions.dateFormat
+  }
+
+  if (mode == 'range') {
+    flatpickrOptions.mode = mode
+
+    if (!flatpickrOptions.dateFormat2) {
+      flatpickrOptions.dateFormat2 = 'Y-m-d H:i:s'
+    }
+    if (!momentOptions.dateFormat2) {
+      momentOptions.dateFormat2 = 'YYYY-MM-DD HH:mm:ss'
+    }
+    if (!displayOptions.dateFormat2) {
+      displayOptions.dateFormat2 = momentOptions.dateFormat2
+    }
+  }
+
+  flatpickrOptions = {
+    disableMobile: true,
+    enableTime: false,
+    enableSeconds: false,
+    ...flatpickrOptions,
+
+    parseDate: (datestr, format) => {
+      return moment(datestr, format, true).toDate()
+    },
+    formatDate: (date, format, locale) => {
+      // locale can also be used
+      return moment(date).format(format)
+    }
+  }
+
+  if (mode == 'range') {
+    if (!Array.isArray(value)) {
+      value = value.split(',')
+    }
+
+    value = _.cloneDeep(value)
+
+    for (let i in value) {
+      let momentDateFormat = momentOptions.dateFormat
+      if (i > 0) {
+        momentDateFormat = momentOptions.dateFormat2
+      }
+      if (typeof value[i] === 'string' && value[i].startsWith('moment')) {
+        value[i] = eval(value[i])
+      } else {
+        value[i] = value[i]
+          ? moment(value[i]).format(momentDateFormat)
+          : moment().format(momentDateFormat)
+      }
+    }
+  } else {
+    if (typeof value === 'string' && value.startsWith('moment')) {
+      value = eval(value)
+    } else {
+      value = value ? moment(value).format(momentOptions.dateFormat) : null
+    }
+  }
+
+  let displayText = ''
+  if (mode == 'range') {
+    displayText = stringformat('{start} to {end}', {
+      start: value[0] ? moment(value[0]).format(displayOptions.dateFormat) : '',
+      end: value[1] ? moment(value[1]).format(displayOptions.dateFormat2) : ''
+    })
+  } else {
+    displayText = value ? moment(value).format(displayOptions.dateFormat) : ''
+  }
+
+  function handleChange(selectedDates, dateStr, instance) {
+    let dates = []
+    for (let i in selectedDates) {
+      if (i > 0 && momentOptions.dateFormat2) {
+        dates.push(moment(selectedDates[i]).format(momentOptions.dateFormat2))
+      } else {
+        dates.push(moment(selectedDates[i]).format(momentOptions.dateFormat))
+      }
+    }
+
+    let val = mode == 'range' ? dates.join(',') : dates[0]
+    console.debug($(instance.input).val())
+
+    onChange({
+      target: { value: val }
+    })
+  }
+
+  const theme = useTheme()
+  const isMobile = useMobile()
+  const rootSX = createRootSX(theme, sx, {
+    isMobile
+  })
+  function render(renderProps, ref) {
+    return (
+      <Box sx={rootSX}>
+        <TextField
+          value={displayText}
+          InputProps={{
+            ref,
+            endAdornment: (
+              <InputAdornment position="end">
+                <i className="fa-solid fa-calendar-days"></i>
+              </InputAdornment>
+            )
+          }}
+        />
+      </Box>
+    )
+  }
+
+  if (mode == 'range') {
+    delete flatpickrOptions.dateFormat
+    delete flatpickrOptions.dateFormat2
+  }
+
+  return (
+    <Flatpickr
+      options={{
+        ...flatpickrOptions,
+        theme: themeName.split('_').pop(),
+      }}
+      value={value}
+      render={render}
+      onChange={handleChange}
+    />
+  )
+}
+
+export function createRootSX(theme, sx, params) {
+  const style = _.merge(
+    {
+      flex: 1,
+      display: 'flex',
+      flexDirection: 'row',
+
+      '& .MuiTextField-root': {
+        flex: 1,
+        '& input': {
+          padding: '8px',
+          appearance: 'textfield'
+        }
+      }
+    },
+    typeof sx === 'function' ? sx(theme) : sx
+  )
+
+  return style
+}
