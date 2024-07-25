@@ -29,8 +29,8 @@ export default function Message(props) {
 
   return (
     <Box sx={rootSX}>
-      { (message.type === 'alert-tempate' || reversed) ?
-      <Box className={clsx(message.type === 'alert-tempate' ? 'alert' : 'message')}>
+      { (message.type === 'alert-template' || reversed) ?
+      <Box className={clsx(message.type === 'alert-template' ? 'alert' : 'message')}>
         <Box>{ string_format(t(message.text), { userName: message.user.userName }) }</Box>
         <Box className='datetime'>{ moment(message.created_at).format('HH:mm') }</Box>
       </Box> :

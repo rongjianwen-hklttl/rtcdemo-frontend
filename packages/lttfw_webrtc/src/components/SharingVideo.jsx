@@ -8,23 +8,20 @@ import { useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 
+import Player from './Player'
+
 export default function SharingVideo(props) {
   const { sx } = props
 
   const sharingVideoId = useSelector((state)=>state.sharingVideo.id)
   const stream = useSelector((state)=>state.sharingVideo.stream)
   const userList = useSelector((state)=>state.users.list)
+  const me = useSelector((state)=>state.users.me)
   const { store, slices } = useStore()
 
   const theme = useTheme()
   const isMobile = useMobile()
   const rootSX = createRootSX(theme, sx, {
-    isMobile
-  })
-  const optSX = createOptSX(theme, sx, {
-    isMobile
-  })
-  const videoSX = createVideoSX(theme, sx, {
     isMobile
   })
 
@@ -43,8 +40,11 @@ export default function SharingVideo(props) {
   }, [stream, sharingVideoId, userList[sharingVideoId]])
   return (
     <Box sx={rootSX}>
-      {/*<Box sx={optSX}><IconButton onClick={stopSharingVideo}><i className="fas fa-times" /></IconButton></Box>*/}
-      <Box component='video' sx={videoSX} autoPlay={true} ref={videoRef} />
+      <Player 
+        videoRef={videoRef}
+        isMe={me.peerId == sharingVideoId} 
+        muted={me.peerId == sharingVideoId}
+      />
     </Box>
   )
 
@@ -62,39 +62,14 @@ export function createRootSX(theme, sx, params) {
       justifyContent: 'center',
       alignItems: 'center',
       position: 'relative',
-    },
-    typeof sx === 'function' ? sx(theme) : sx
-  )
 
-  return style
-}
+      '&:hover .label': {
+        backgroundColor: 'rgba(0, 0, 0, 0.2)',
+      },
 
-export function createOptSX(theme, sx, params) {
-  const style = _.merge(
-    {
-      top: '0.5rem',
-      right: '0.5rem',
-      position: 'absolute',
-
-      '& .MuiIconButton-root': {
-        width: '2rem',
-        height: '2rem',
-        fontSize: '1rem',
-      }
-    },
-    typeof sx === 'function' ? sx(theme) : sx
-  )
-
-  return style
-}
-
-export function createVideoSX(theme, sx, params) {
-  const style = _.merge(
-    {
-      width: '100%',
-      height: '100%',
-      aspectRatio: '16/9',
-      maxHeight: '100%',
+      '&:hover .controls': {
+        display: 'flex',
+      },
     },
     typeof sx === 'function' ? sx(theme) : sx
   )

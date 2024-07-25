@@ -17,7 +17,7 @@ module.exports = webpackMerge(plugins, {
       filename: 'index.html',
       inject: 'body',
       meta: {
-        viewport: 'width=device-width, initial-scale=1.0',
+        viewport: 'width=device-width, initial-scale=1.0, user-scalable=0, minimal-ui',
         charset: { charset: 'UTF-8' }
       },
       env: process.env,

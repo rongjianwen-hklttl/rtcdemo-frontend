@@ -49,7 +49,7 @@ export default function Init(props) {
                     avatar,
                 },
                 text: 'alert-user-left',
-                type: 'alert-tempate',
+                type: 'alert-template',
             }))
         })
         

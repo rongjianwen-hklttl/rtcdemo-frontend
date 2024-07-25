@@ -2,9 +2,10 @@ import React from 'react'
 import { useSelector } from 'react-redux'
 import { useParams } from 'react-router-dom'
 
+import { useTranslation } from 'react-i18next'
 import { v4 as uuidv4 } from 'uuid'
 import moment from 'moment'
-import { useTranslation } from 'react-i18next'
+import _ from 'lodash'
 
 import { useMobile } from '@lttfw/core/src/helpers'
 import { useSignal } from '../providers/SignalProvider'
@@ -59,7 +60,14 @@ export default function MessageList(props) {
     if (13 !== e.keyCode) {
       return
     }
+
+    if (_.isEmpty(e.target.value)) {
+      e.preventDefault()
+      return
+    }
+
     e.preventDefault()
+
     setValue('')
 
     const messageData = {

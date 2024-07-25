@@ -1,10 +1,11 @@
 import React from 'react'
 import { useSelector } from 'react-redux'
-import { useNavigate } from "react-router-dom"
+import { useNavigate, useParams } from "react-router-dom"
 
 import Peer from 'peerjs'
-import { v4 as uuidv4 } from 'uuid'
 import { useTranslation } from 'react-i18next'
+import { v4 as uuidv4 } from 'uuid'
+import _ from 'lodash'
 
 import { useLayout } from '@lttfw/core/src/providers/LayoutProvider'
 import { useStore } from '@lttfw/core/src/providers/StoreProvider'
@@ -25,14 +26,15 @@ export default function Login(props) {
   const { sx } = props
 
   const layoutName = useLayout()
+  const { roomName: defaultRoomName, userName: defaultUserName } = useParams()
   const { store, slices } = useStore()
   const navigate = useNavigate()
   const ws = useSignal()
   const { t } = useTranslation()
   const generator = new AvatarGenerator()
   
-  const [roomName, setRoomName] = React.useState('')
-  const [userName, setUserName] = React.useState('')
+  const [roomName, setRoomName] = React.useState(defaultRoomName??'')
+  const [userName, setUserName] = React.useState(defaultUserName??'')
   const [avatar, setAvatar] = React.useState(generator.generateRandomAvatar())
 
   const theme = useTheme()
@@ -50,8 +52,8 @@ export default function Login(props) {
             <Avatar alt={userName} src={avatar} sx={{ width: 86, height: 86 }} />
             <IconButton onClick={handleGenAvatar}><i className="fa-solid fa-refresh" /></IconButton>
           </Box>
-          <TextField label={t('label-room-name')} variant="outlined" value={roomName} onChange={handleRoomNameChange} />
-          <TextField label={t('label-user-name')} variant="outlined" value={userName} onChange={handleUserNameChange} />
+          <TextField label={t('label-room-name')} variant="outlined" value={roomName} disabled={!_.isEmpty(defaultRoomName)} onChange={handleRoomNameChange} />
+          <TextField label={t('label-user-name')} variant="outlined" value={userName} disabled={!_.isEmpty(defaultUserName)} onChange={handleUserNameChange} />
         </Box>
         <Box className="login-opt">
           <Button variant="contained" onClick={handleSubmit}>{t('label-join')}</Button>
@@ -73,7 +75,7 @@ export default function Login(props) {
   }
 
   function handleSubmit() {
-    navigate('/'+roomName+'/'+userName+(new URL(avatar)).search)
+    navigate('/session/'+roomName+'/'+userName+'/avatar/'+(new URL(avatar)).search)
   }
 }
 

@@ -20,7 +20,7 @@ export default function VideoList(props) {
   const sharingVideoId = useSelector((state)=>state.sharingVideo.id)
   const me = useSelector((state)=>state.users.me)
   const userList = useSelector((state)=>state.users.list)
-    console.debug('sharingVideoId: ' + sharingVideoId)
+
   const theme = useTheme()
   const isMobile = useMobile()
   const rootSX = createRootSX(theme, sx, {
@@ -40,13 +40,13 @@ export default function VideoList(props) {
       <Grid container spacing={2}>
         { me && sharingVideoId !== me.peerId &&
           <Grid item {...itemProps}>
-            { <UserCard user={me} muted={true} /> }
+            { <UserCard user={me} muted={true} isMe={true} /> }
           </Grid>
         }
         { _.keys(userList).map((peerId)=>
           sharingVideoId !== peerId &&
           <Grid item {...itemProps} key={uuidv4()}>
-             <UserCard user={userList[peerId]} muted={false} />
+             <UserCard user={userList[peerId]} muted={false} isMe={false} />
           </Grid>
         )}
       </Grid>

@@ -19,65 +19,8 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
 
-function LangPopover() {
-  const [anchorEl, setAnchorEl] = React.useState(null)
-  const lang = useSelector((state)=>state.settings.lang)
-
-  const { store, slices } = useStore()
-
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget)
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null)
-  };
-
-  const open = Boolean(anchorEl)
-  const id = open ? 'lang-popover' : undefined
-  return (
-    <div>
-      <IconButton onClick={handleClick}>
-        <i className="fa-solid fa-earth-asia" />
-      </IconButton>
-      <Popover
-        id={id}
-        open={open}
-        anchorEl={anchorEl}
-        onClose={handleClose}
-        anchorOrigin={{
-          vertical: 'bottom',
-          horizontal: 'left',
-        }}
-      >
-        <Box sx={{padding: '0.5rem'}}>
-          <FormControl>
-            <RadioGroup
-              value={lang}
-              name="radio-buttons-group"
-              onChange={handleLangChange}
-            >
-              <FormControlLabel value="zh_hk" control={<Radio />} label="繁中" />
-              <FormControlLabel value="en_hk" control={<Radio />} label="English" />
-            </RadioGroup>
-          </FormControl>
-        </Box>
-      </Popover>
-    </div>
-  )
-
-  function handleLangChange(e) {
-    handleClose()
-
-    const lang = e.target.value
-    localStorage.setItem('lang', lang)
-
-    store.dispatch(slices.settings.actions.set({
-      key: 'lang',
-      value: lang,
-    }))    
-  }
-}
+import LangPopover from '../../../components/LangPopover'
+import UserPopover from '../../../components/UserPopover'
 
 export default function Header(props) {
   const { sx } = props
@@ -95,11 +38,9 @@ export default function Header(props) {
   return (
     <Box sx={rootSX}>
       <Box className="logo"></Box>
-      <Box className="roomName">{_.isEmpty(roomName) ? null : t('label-room')+': '+roomName}</Box>
+      <Box className="roomName">{roomName}</Box>
       <Box className="userName">{userName}</Box>
-      <Box className="avatar">
-        { !_.isEmpty(window.location.search) && <Avatar alt={userName} src={"https://avataaars.io/"+window.location.search} /> }
-      </Box>
+      <Box className="avatar"><UserPopover /></Box>
       <Box><LangPopover /></Box>
     </Box>
   )
@@ -141,6 +82,7 @@ export function createRootSX(theme, sx, params) {
         display: '-webkit-box',
         '-webkit-line-clamp': '1',
         '-webkit-box-orient': 'vertical',
+        overflow: 'hidden',
         height: theme.header.height,
         lineHeight: theme.header.height,
         flex: 1,
@@ -152,6 +94,7 @@ export function createRootSX(theme, sx, params) {
         display: '-webkit-box',
         '-webkit-line-clamp': '1',
         '-webkit-box-orient': 'vertical',
+        overflow: 'hidden',
         height: theme.header.height,
         lineHeight: theme.header.height,
         flex: 1,

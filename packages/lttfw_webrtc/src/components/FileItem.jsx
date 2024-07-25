@@ -5,6 +5,7 @@ import { v4 as uuidv4 } from 'uuid'
 import _ from 'lodash'
 import moment from 'moment'
 
+import { useStore } from '@lttfw/core/src/providers/StoreProvider'
 import { useMobile } from '@lttfw/core/src/helpers'
 
 import { useTheme } from '@mui/material'
@@ -16,17 +17,31 @@ import { downloadURI } from '../helpers'
 export default function FileItem(props) {
   const { sx, file } = props
 
+  const { store, slices } = useStore()
+
   const theme = useTheme()
   const isMobile = useMobile()
   const rootSX = createRootSX(theme, sx, {
     isMobile,
+    progress: file.progress,
   })
   return (
-    <Box sx={rootSX}>
+    <Box sx={rootSX} className={file.status}>
       <Box className="file">
         <Box className="filename">{ file.filename }</Box>
-        <IconButton onClick={handleClick}><i className="fa-solid fa-cloud-arrow-down" /></IconButton>
+        { file.url &&
+          <IconButton onClick={handleClick}>
+            <i className="fa-solid fa-cloud-arrow-down" />
+          </IconButton>
+        }
       </Box>
+      { file.progress < 1 &&
+        <Box className="progress">
+          <Box className="label">
+            { Math.floor(file.progress * 100) }%
+          </Box>
+        </Box>
+      }
       <Box className="sender">
         <Box className="created_by">{ file.created_by }</Box>
         <Box className="created_at">{ moment(file.created_at).format("HH:mm") }</Box>
@@ -35,12 +50,32 @@ export default function FileItem(props) {
   )
 
   function handleClick() {
-    downloadURI(file.url,  file.filename)
+    const { filename, url } = file
+    downloadURI(url, filename)
+/*
+    const { filename, blob } = file
+
+    store.dispatch(slices.files.actions.clearBlob({
+      id: file.id
+    }))
+
+    setTimeout(()=>{
+      const url = URL.createObjectURL(new Blob(blob, {
+        type: file.filetype,
+      }))
+      downloadURI(url, filename)
+      URL.revokeObjectURL(blob)
+    }, 100)
+*/
   }
 }
 
 export function createRootSX(theme, sx, params) {
-  const { isMobile } = params
+  const {
+    isMobile, 
+    progress,
+  } = params
+
   const style = _.merge(
     {
       display: 'block',
@@ -67,6 +102,22 @@ export function createRootSX(theme, sx, params) {
         '-webkit-box-orient': 'vertical',
         height: '3rem',
         lineHeight: '1.5',
+        overflow: 'hidden',
+      },
+      '& .progress': {
+        width: Math.floor(progress*100)+'%',
+        backgroundColor: progress >= 1 ? 'green' : 'red',
+        height: '1.2rem',
+        borderRadius: '2rem',
+        margin: '0.5rem 0',
+        fontSize: '11px',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+      },
+      '& .progress .label': {
+        position: 'absolute',
+        color: 'white',
       },
       '& .sender': {
         display: 'flex',
@@ -81,6 +132,8 @@ export function createRootSX(theme, sx, params) {
         wordBreak: 'break-all',
         '-webkit-line-clamp': '1',
         '-webkit-box-orient': 'vertical',
+        height: '1rem',
+        overflow: 'hidden',
       },
       '& .created_at': {
         flex: 1,

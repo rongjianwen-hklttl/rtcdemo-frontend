@@ -1,14 +1,38 @@
 const routes = {
-  '/:roomName/:userName': {
-    path: '/:roomName/:userName',
+  '/session/:roomName/:userName/avatar': {
+    path: '/session/:roomName/:userName/avatar',
+    name: 'room',
+    page_name: 'room',
+    page_component: 'Room',
+    page_props: {},
+    theme_name: 'classic'
+  },
+  '/session/:roomName/:userName': {
+    path: '/session/:roomName/:userName',
+    name: 'login',
+    page_name: 'login',
+    page_component: 'Login',
+    page_props: {},
+    theme_name: 'classic'
+  },
+  '/session/:roomName': {
+    path: '/session/:roomName',
+    name: 'login',
+    page_name: 'login',
+    page_component: 'Login',
+    page_props: {},
+    theme_name: 'classic'
+  },
+  '/': {
+    path: '/',
     name: 'home',
     page_name: 'home',
     page_component: 'Home',
     page_props: {},
     theme_name: 'classic'
   },
-  '/': {
-    path: '/',
+  '/login': {
+    path: '/login',
     name: 'login',
     page_name: 'login',
     page_component: 'Login',
