@@ -1,0 +1,1 @@
+export { default as ClassicEditor } from './CKEditor5'

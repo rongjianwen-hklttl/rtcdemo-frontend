@@ -6,5 +6,5 @@ const paths = require('./paths')
 const ENV = process.env
 
 module.exports = webpackMerge(externals, {
-
+  'videojs': 'videojs'
 })

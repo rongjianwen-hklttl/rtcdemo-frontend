@@ -89,7 +89,7 @@ export default function UserPopover(props) {
         keepMounted
         onClose={handleDialogClose}
       >
-        <DialogTitle>Copy share link to clipboard successfully.</DialogTitle>
+        <DialogTitle>Copy the shareable link to clipboard successfully.</DialogTitle>
         <DialogActions>
           <Button onClick={handleDialogClose}>Close</Button>
         </DialogActions>

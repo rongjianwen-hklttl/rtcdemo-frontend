@@ -12,8 +12,6 @@ import { useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import IconButton from '@mui/material/IconButton'
 
-import UserList from '../../../components/UserList'
-
 export default function AppSidebar(props) {
   const { sx } = props
 
@@ -32,7 +30,6 @@ export default function AppSidebar(props) {
 
   return (
     <Box sx={rootSX} className="appSidebar">
-      <UserList />
       <Box sx={optSX}>
         <IconButton onClick={startSharingVideo}><i className="fa-solid fa-display" /></IconButton>
         <IconButton onClick={startSendingVideo}><i className="fa-solid fa-share-nodes"/></IconButton>

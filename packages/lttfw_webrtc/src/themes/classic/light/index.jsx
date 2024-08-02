@@ -8,6 +8,8 @@ import footer from './footer'
 import content from './content'
 import main from './main'
 import appSidebar from './appSidebar'
+import leftSidebar from './leftSidebar'
+import rightSidebar from './rightSidebar'
 
 export default {
   ...mui,
@@ -17,4 +19,6 @@ export default {
   content,
   main,
   appSidebar,
+  leftSidebar,
+  rightSidebar,
 }

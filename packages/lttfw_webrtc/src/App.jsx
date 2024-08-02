@@ -12,6 +12,7 @@ import i18nResources from './i18n/resources'
 import { useStore } from '@lttfw/core/src/providers/StoreProvider'
 import { useEnv } from '@lttfw/core/src/providers/EnvProvider'
 import { useEngine } from '@lttfw/core/src/providers/EngineProvider'
+import { useMobile } from '@lttfw/core/src/helpers'
 
 import Box from '@mui/material/Box'
 
@@ -26,6 +27,9 @@ export default function App(props) {
   const [initStatus, setInitStatus] = React.useState('completed')
   const engine = useEngine()
   const lang = useSelector((state)=>state.settings.lang)
+
+  const { store, slices } = useStore()
+  const isMobile = useMobile()
 
   const rootSX = {
     display: 'flex',

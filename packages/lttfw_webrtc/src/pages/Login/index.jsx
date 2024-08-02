@@ -21,6 +21,7 @@ import Avatar from '@mui/material/Avatar'
 import { AvatarGenerator } from 'random-avatar-generator'
 
 import Header from '../../layouts/common/Header'
+import ResetAll from '../../components/ResetAll'
 
 export default function Login(props) {
   const { sx } = props
@@ -46,6 +47,7 @@ export default function Login(props) {
   return (
     <>
       <Header />
+      <ResetAll />
       <Box sx={rootSX}>
         <Box className="login-content">
           <Box className="login-avatar">

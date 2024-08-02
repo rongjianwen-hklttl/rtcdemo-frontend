@@ -122,6 +122,11 @@ const scripts = [
     'vendor/peerjs@1.5.4/peerjs.js',
     'vendor/peerjs@1.5.4/peerjs.min.js',
   ],
+
+  [
+    'vendor/videojs@8.3.0/video.js',
+    'vendor/videojs@8.3.0/video.min.js',
+  ],
   
 ]
 

@@ -10,6 +10,16 @@ export default (initialState) => ({
         state[i] = payload[i]
       }
     },
+    reset(state, action) {
+      const stream = state.me.stream
+      if (stream) {
+        const tracks = stream.getTracks()
+        tracks.forEach(track => track.stop())
+      }
+
+      state.list = {}
+      state.me = {}
+    },
     setList(state, action) {
       const { payload } = action
       state.list = payload
@@ -26,13 +36,39 @@ export default (initialState) => ({
         state.me[i] = payload[i]
       }
     },
+    updateMeStatus(state, action) {
+      const { payload: status } = action
+      state.me.status = status
+    },
+    updateMeConstraintVideo(state, action) {
+      const { payload } = action
+      if (payload === null) {
+        state.me.constraints.video = undefined
+      } else {
+        state.me.constraints.video = payload
+      }
+    },
+    updateMeConstraintAudio(state, action) {
+      const { payload } = action
+      if (payload === null) {
+        state.me.constraints.audio = undefined
+      } else {
+        state.me.constraints.audio = payload
+      }
+    },
     updateByPeerId(state, action) {
       const { payload } = action
       const { peerId, ...rest } = payload
       state.list[peerId] = {
+        peerId,
         ...state.list[peerId],
         ...rest,
       }
+    },
+    setByPeerId(state, action) {
+      const { payload } = action
+      const { peerId, key, value } = payload
+      state.list[peerId][key] = value
     },
     remove(state, action) {
       const { payload } = action

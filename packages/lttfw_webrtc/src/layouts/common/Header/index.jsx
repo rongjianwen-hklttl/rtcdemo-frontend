@@ -19,7 +19,8 @@ import FormControlLabel from '@mui/material/FormControlLabel'
 import FormControl from '@mui/material/FormControl'
 import FormLabel from '@mui/material/FormLabel'
 
-import LangPopover from '../../../components/LangPopover'
+import SettingsPopover from '../../../components/SettingsPopover'
+import LangsPopover from '../../../components/LangsPopover'
 import UserPopover from '../../../components/UserPopover'
 
 export default function Header(props) {
@@ -41,13 +42,10 @@ export default function Header(props) {
       <Box className="roomName">{roomName}</Box>
       <Box className="userName">{userName}</Box>
       <Box className="avatar"><UserPopover /></Box>
-      <Box><LangPopover /></Box>
+      { !isMobile && <Box><SettingsPopover /></Box> }
+      <Box><LangsPopover /></Box>
     </Box>
   )
-
-  function changeLang() {
-
-  }
 }
 
 export function createRootSX(theme, sx, params) {
