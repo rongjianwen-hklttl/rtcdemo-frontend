@@ -15,15 +15,15 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 
 import UserList from './UserList'
-import SharingButtons from './SharingButtons'
+import LsControlPanel from './LsControlPanel'
+import LsNavigation from './LsNavigation'
 
 export default function LeftSidebar(props) {
   const { sx } = props
 
   const hidden = useSelector((state)=>state.settings.leftSidebar.hidden)
   const currentTab = useSelector((state)=>state.settings.currentTab)
-
-  const { roomName, userName } = useParams()
+  
   const { store, slices } = useStore()
 
   const theme = useTheme()
@@ -37,7 +37,8 @@ export default function LeftSidebar(props) {
   return (
     <Box sx={rootSX}>
       <UserList />
-      <SharingButtons />
+      <LsControlPanel />
+      { !isMobile && <LsNavigation /> }
     </Box>
   )
 }
@@ -55,7 +56,7 @@ export function createRootSX(theme, sx, params) {
       //backgroundColor: '#eee',
       width: isMobile ? '100%' : theme.leftSidebar.width,
       maxWidth: isMobile ? '100%' : theme.leftSidebar.width,
-      boxShadow: '4px 0 4px -2px #f2f2f2',
+      boxShadow: theme.leftSidebar.boxShadow,
     },
     typeof sx === 'function' ? sx(theme) : sx
   )

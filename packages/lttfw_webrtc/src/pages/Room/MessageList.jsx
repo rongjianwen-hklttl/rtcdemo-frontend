@@ -21,15 +21,12 @@ import Message from './Message'
 export default function MessageList(props) {
   const { sx } = props
 
-  const sharingVideoId = useSelector((state)=>state.sharingVideo.id)
+  const currentUserName = useSelector((state)=>state.users.me.userName)
   const messages = useSelector((state)=>state.messages.list)
-  const currentUserName = useSelector((state)=>state.users.userName)
-  const currentPeerId = useSelector((state)=>state.users.peerId)
-  const currentAvatar = useSelector((state)=>state.users.avatar)
-
+  
   const [value, setValue] = React.useState('')
 
-  const ws = useSignal()
+  const { ws } = useSignal()
   const { t } = useTranslation()
   
   const { store, slices } = useStore()
@@ -38,69 +35,23 @@ export default function MessageList(props) {
   const isMobile = useMobile()
   const rootSX = createRootSX(theme, sx, {
     isMobile,
-    sharingVideoId,
   })
 
-  const inputRef = React.useRef(null)
   return (
     <Box sx={rootSX}>
-      <Box className="message-content">
-        { messages.map((m)=>
-            <Message
-              key={uuidv4()} 
-              message={m}
-              reversed={m.user.userName == currentUserName}
-            />) }
-      </Box>
-      <Box className="message-footer">
-        <Input
-          ref={inputRef} 
-          fullWidth={true}
-          placeholder={t('label-type-a-message')}
-          multiline={true}
-          value={value}
-          onChange={handleChange}
-          onKeyDown={handleKeyDown}
-        />
-      </Box>
-    </Box>
+    { messages.map((m)=>
+      <Message
+        key={uuidv4()} 
+        message={m}
+        reversed={m.user.userName == currentUserName}
+      />
+    )}
+  </Box>
   )
-
-  function handleChange(e) {
-    setValue(e.target.value)
-  }
-
-  function handleKeyDown(e) {
-    if (13 !== e.keyCode) {
-      return
-    }
-
-    if (_.isEmpty(e.target.value)) {
-      e.preventDefault()
-      return
-    }
-
-    e.preventDefault()
-
-    setValue('')
-
-    const messageData = {
-      user: {
-        userName: currentUserName,
-        peerId: currentPeerId,
-        avatar: currentAvatar,
-      },
-      text: e.target.value,
-      created_at: moment().format('YYYY-MM-DD HH:mm:ss')
-    }
-
-    store.dispatch(slices.messages.actions.addMessage(messageData))
-    ws.emit('send-message', currentUserName, messageData)
-  }
 }
 
 export function createRootSX(theme, sx, params) {
-  const { isMobile, sharingVideoId } = params
+  const { isMobile } = params
   const style = _.merge(
     {
       flex: 1,
@@ -109,17 +60,6 @@ export function createRootSX(theme, sx, params) {
       flexDirection: 'column',
       overflowY: 'auto',
       overflowX: 'hidden',
-        
-      '& .message-content': {
-        flex: 1,
-        overflowY: 'auto',
-        overflowX: 'hidden',
-      },
-
-      '& .message-footer': {
-        padding: '0.5rem',
-        backgroundColor: '#f2f2f2',
-      }
     },
     typeof sx === 'function' ? sx(theme) : sx
   )

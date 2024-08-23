@@ -14,40 +14,40 @@ import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 
-import SharingButtons from './SharingButtons'
 import UserItem from './UserItem'
-import MeItem from './MeItem'
+import UserItemMe from './UserItemMe'
 
 export default function UserList(props) {
   const { sx } = props
 
-  const users = useSelector((state)=>state.users.list)
+  const currentLsTab = useSelector((state)=>state.settings.currentLsTab)
+  const peerIds = useSelector((state)=>Object.keys(state.users.list))
 
-  const { roomName, userName } = useParams()
   const { store, slices } = useStore()
 
   const theme = useTheme()
   const isMobile = useMobile()
   const rootSX = createRootSX(theme, sx, {
     isMobile,
+    currentLsTab,
   })
 
   return (
     <Box sx={rootSX}>
-      <MeItem />
-      { Object.keys(users).map((userId)=><UserItem key={uuidv4()} user={users[userId]} />) }
+      <UserItemMe />
+      { peerIds.map((peerId)=><UserItem key={uuidv4()} peerId={peerId} />) }
     </Box>
   )
 }
 
 export function createRootSX(theme, sx, params) {
-  const { cover } = params
+  const { isMobile, currentLsTab } = params
 
   const style = _.merge(
     {
       minHeight: 0,
       flex: 1,
-      display: 'flex',
+      display: currentLsTab !== 'lsUsers' ? 'none' : 'flex',
       flexDirection: 'column',
     },
     typeof sx === 'function' ? sx(theme) : sx

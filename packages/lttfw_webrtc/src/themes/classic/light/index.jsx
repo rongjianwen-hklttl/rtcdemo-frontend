@@ -10,6 +10,7 @@ import main from './main'
 import appSidebar from './appSidebar'
 import leftSidebar from './leftSidebar'
 import rightSidebar from './rightSidebar'
+import dropzone from './dropzone'
 
 export default {
   ...mui,
@@ -21,4 +22,5 @@ export default {
   appSidebar,
   leftSidebar,
   rightSidebar,
+  dropzone,
 }

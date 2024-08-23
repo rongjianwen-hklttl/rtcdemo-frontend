@@ -12,12 +12,11 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Grid from '@mui/material/Grid'
 
-import UserCard from './UserCard'
-import VideoMe from './VideoMe'
+import UserCardMe from './UserCardMe'
+import UserCardList from './UserCardList'
 
 export default function VideoChat(props) {
   const { sx } = props
-  const users = useSelector((state)=>state.users.list)
 
   const theme = useTheme()
   const isMobile = useMobile()
@@ -26,14 +25,14 @@ export default function VideoChat(props) {
   })
 
   return (
-    <Grid container spacing={2}>
-      <VideoMe />
-      { Object.keys(users).map((userId)=>
+    <Box sx={rootSX}>
+      <Grid container spacing={2}>
         <Grid key={uuidv4()} item xs={12} md={6} xl={4}>
-          <UserCard user={users[userId]} muted={false} />
+          <UserCardMe />
         </Grid>
-      )}
-    </Grid>
+        <UserCardList />
+      </Grid>
+    </Box>
   )
 }
 
@@ -41,6 +40,8 @@ export function createRootSX(theme, sx, params) {
   const style = _.merge(
     {
       minHeight: 0,
+      overflowY: 'auto',
+      flex: 1,
     },
     typeof sx === 'function' ? sx(theme) : sx
   )

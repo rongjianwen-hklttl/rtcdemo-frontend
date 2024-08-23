@@ -42,8 +42,8 @@ export default function Header(props) {
       <Box className="roomName">{roomName}</Box>
       <Box className="userName">{userName}</Box>
       <Box className="avatar"><UserPopover /></Box>
-      { !isMobile && <Box><SettingsPopover /></Box> }
-      <Box><LangsPopover /></Box>
+      <Box className="settings"><SettingsPopover /></Box>
+      <Box className="langs"><LangsPopover /></Box>
     </Box>
   )
 }
@@ -56,10 +56,11 @@ export function createRootSX(theme, sx, params) {
       flexDirection: 'row',
       alignItems: 'center',
       minHeight: 0,
+      padding: '0.5rem',
 
-      height: theme.header.height,
+      //height: theme.header.height,
       //backgroundColor: theme.header.bgColor,
-      background: 'linear-gradient(#f2f2f2, #bfbfbf)',
+      background: theme.header.background,
       color: theme.header.color,
       fontSize: '1.2rem',
       textShadow: '2px 2px 2px rgb(128, 128, 128)',
@@ -68,7 +69,7 @@ export function createRootSX(theme, sx, params) {
         padding: '0 0.5rem',
         width: isMobile ? '4rem' : theme.appSidebar.width,
         height: isMobile ? '80%' : '100%',
-        backgroundImage: isMobile ? 'url("/assets/images/wachord_icon.png")' : 'url("/assets/images/wachord_logo.png")',
+        backgroundImage: isMobile ? 'url("/assets/images/wachord_logo.png")' : 'url("/assets/images/webheader.png")',
         backgroundSize: 'contain',
         backgroundPosition: 'center center',
         backgroundRepeat: 'no-repeat',
@@ -81,8 +82,8 @@ export function createRootSX(theme, sx, params) {
         '-webkit-line-clamp': '1',
         '-webkit-box-orient': 'vertical',
         overflow: 'hidden',
-        height: theme.header.height,
-        lineHeight: theme.header.height,
+        //height: theme.header.height,
+        //lineHeight: theme.header.height,
         flex: 1,
         textAlign: 'left',
       },
@@ -93,13 +94,19 @@ export function createRootSX(theme, sx, params) {
         '-webkit-line-clamp': '1',
         '-webkit-box-orient': 'vertical',
         overflow: 'hidden',
-        height: theme.header.height,
-        lineHeight: theme.header.height,
+        //height: theme.header.height,
+        //lineHeight: theme.header.height,
         flex: 1,
         textAlign: 'right',
       },
       '& .avatar': {
-        marginRight: '0.5rem',
+        //height: theme.header.height,
+      },
+      '& .avatar .MuiButtonBase-root': {
+        padding: 0,
+        margin: 0,
+        minWidth: 'unset',
+        //height: '100%',
       },
     },
     typeof sx === 'function' ? sx(theme) : sx

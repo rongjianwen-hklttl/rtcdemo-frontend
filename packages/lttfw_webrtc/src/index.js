@@ -33,7 +33,7 @@ const engine = new Engine({
   base_url: env.base_url,
   api_url: env.api_url,
   basename: env.basename,
-  themeName: 'classic_light',
+  themeName: helpers.getCurrentThemeName(),
   themes,
   layoutName: 'Classic',
   layouts,

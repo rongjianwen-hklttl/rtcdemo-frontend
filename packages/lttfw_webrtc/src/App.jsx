@@ -20,8 +20,18 @@ import { App as CApp } from '@lttfw/core'
 import {
   request,
   request_get,
-  request_post
+  request_post,
+  getCurrentLang,
 } from './helpers'
+
+i18n.use(initReactI18next).init({
+  resources: i18nResources,
+  lng: getCurrentLang(),
+  keySeparator: false,
+  interpolation: {
+    escapeValue: false
+  }
+})
 
 export default function App(props) {
   const [initStatus, setInitStatus] = React.useState('completed')
@@ -37,15 +47,6 @@ export default function App(props) {
     flex: 1,
     minHeight: 0,
   }
-
-  i18n.use(initReactI18next).init({
-    resources: i18nResources,
-    lng: lang,
-    keySeparator: false,
-    interpolation: {
-      escapeValue: false
-    }
-  })
 
   return (
     <I18nextProvider i18n={ i18n }>

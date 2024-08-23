@@ -13,7 +13,9 @@ import Badge from '@mui/material/Badge'
 import Avatar from '@mui/material/Avatar'
 
 export default function UserItem(props) {
-  const { sx, user } = props
+  const { sx, peerId } = props
+
+  const user = useSelector((state)=>state.users.list[peerId])
 
   const theme = useTheme()
   const isMobile = useMobile()
@@ -21,8 +23,7 @@ export default function UserItem(props) {
     isMobile
   })
 
-  return (
-    user &&
+  return user &&
     <Box sx={rootSX}>
       <Avatar alt={user.userName} src={user.avatar} />
       <Box className="label">{user.userName}</Box>
@@ -35,7 +36,6 @@ export default function UserItem(props) {
         </Badge>
       </Box>
     </Box>
-  )
 }
 
 export function createRootSX(theme, sx, params) {
@@ -61,7 +61,7 @@ export function createRootSX(theme, sx, params) {
         display: 'none',
         width: '2rem',
         height: '2rem',
-        fontSize: '1rem',
+        fontSize: '1.2rem',
       },
 
       '& .status .MuiBadge-badge': {

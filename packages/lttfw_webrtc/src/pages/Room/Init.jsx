@@ -12,17 +12,18 @@ import { usePeer } from '../../providers/PeerProvider'
 
 import { useMobile } from '@lttfw/core/src/helpers'
 
-import InitCall from './InitCall'
+import FileReceiver from './FileReceiver'
 import InitWs from './InitWs'
-import InitStream from './InitStream'
-import InitMobileStream from './InitMobileStream'
-import SyncUserConstraints from './SyncUserConstraints'
+import InitPeer from './InitPeer'
+import InitPeerUsers from './InitPeerUsers'
+import InitRecall from './InitRecall'
+import InitConstraints from './InitConstraints'
 
 import { getDevices, mobileAndTabletCheck } from '../../helpers'
 
 export default function Init(props) {
     const {
-        rootName: currentRoomName,
+        roomName: currentRoomName,
         userName: currentUserName,
     } = useParams()
 
@@ -40,27 +41,26 @@ export default function Init(props) {
         }})
 
         store.dispatch(slices.users.actions.updateMe({
-          rootName: currentRoomName,
+          roomName: currentRoomName,
           userName: currentUserName,
           avatar: currentAvatar,
           peerId: currentPeer.id,
-          peer: currentPeer,
-          stream: null,
           constraints: {},
         }))
     }, [])
 
     const commonProps = {
         avatar: currentAvatar,
-        rootName: currentRoomName,
+        roomName: currentRoomName,
         userName: currentUserName,
     }
+
     return <>
         <InitWs {...commonProps} />
-        { isMobileDevice ? <InitMobileStream {...commonProps} />
-            : <InitStream {...commonProps} />
-        }
-        <InitCall {...commonProps} />
-        <SyncUserConstraints {...commonProps} />
+        <InitPeer {...commonProps} />
+        <InitPeerUsers {...commonProps} />
+        <InitRecall {...commonProps} />
+        <InitConstraints {...commonProps} />
+        <FileReceiver />
     </>
 }

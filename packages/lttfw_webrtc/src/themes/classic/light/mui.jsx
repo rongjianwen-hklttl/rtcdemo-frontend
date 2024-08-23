@@ -3,7 +3,7 @@ import chroma from 'chroma-js'
 
 const mui = {
   typography: {
-    fontFamily: ['Noto Sans TC'].join(','),
+    fontFamily: ['Noto Sans CJK'].join(','),
     button: {
       textTransform: 'none'
     }

@@ -7,10 +7,6 @@ const { BASENAME } = process.env
 
 const styles = [
   [
-    'vendor/notosans/notosanstc.css',
-    'vendor/notosans/notosanstc.css'
-  ],
-  [
     'vendor/fontawesome-free-6.3.0-web/css/all.css',
     'vendor/fontawesome-free-6.3.0-web/css/all.min.css'
   ],

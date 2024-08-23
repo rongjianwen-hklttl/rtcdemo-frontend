@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton'
 
 import LeftSidebar from './LeftSidebar'
 import RightSidebar from './RightSidebar'
-import VideoChatContainer from './VideoChatContainer'
+import VideoChatRoot from './VideoChatRoot'
 import ControlPanel from './ControlPanel'
 
 import BottomNavigation from './BottomNavigation'
@@ -28,7 +28,7 @@ export default function MobileContent(props) {
     <Box sx={rootSX}>
       <Box className="main-content">
         <LeftSidebar />
-        <VideoChatContainer />
+        <VideoChatRoot />
         <RightSidebar />
         <ControlPanel />
       </Box>

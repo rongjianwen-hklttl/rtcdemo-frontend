@@ -1,6 +1,6 @@
 export default {
   typography: {
-    fontFamily: ['Noto Sans TC'].join(','),
+    fontFamily: ['Noto Sans CJK'].join(','),
     button: {
       textTransform: 'none'
     }

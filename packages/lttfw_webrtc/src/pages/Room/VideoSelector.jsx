@@ -7,6 +7,7 @@ import clsx from 'clsx'
 import _ from 'lodash'
 
 import { useStore } from '@lttfw/core/src/providers/StoreProvider'
+import { useStream } from '../../providers/StreamProvider'
 
 import { useMobile } from '@lttfw/core/src/helpers'
 import { useTheme } from '@mui/material'
@@ -23,27 +24,34 @@ import {
   bindMenu,
 } from 'material-ui-popup-state/hooks'
 
+
+import DeviceLabel from './DeviceLabel'
+
 export default function VideoSelector(props) {
-  const { sx } = props
+  const { sx, variant, useLabel } = props
 
   const popupState = usePopupState({ variant: 'popover', popupId: 'videoSelector' })
   const devices = useSelector((state)=>state.devices.video)
   const constraintVideo = useSelector((state)=>state.users.me.constraints?.video)
-  const currentStream = useSelector((state)=>state.users.me.stream)
 
   const { store, slices } = useStore()
+  const currentStream = useStream()
 
   const theme = useTheme()
   const isMobile = useMobile()
   const rootSX = createRootSX(theme, sx, {
     isMobile,
+    variant,
   })
 
   return (
     <Box sx={rootSX}>
-      <IconButton variant="contained" {...bindTrigger(popupState)}>
-        { !constraintVideo && <i className="fa-solid fa-times" /> }
-        <i className="fa-solid fa-camera" />
+      <IconButton disableRipple={true} variant="contained" {...bindTrigger(popupState)}>
+        <Box sx={{position: 'relative'}}>
+          { !constraintVideo && <i className="fa-solid fa-times" /> }
+          <i className="fa-solid fa-camera" />
+        </Box>
+        { useLabel && <DeviceLabel className='label' deviceType='video' deviceId={constraintVideo?.deviceId} /> }
       </IconButton>
       <Menu {...bindMenu(popupState)}>
         { devices.map((d, i)=>
@@ -63,20 +71,44 @@ export default function VideoSelector(props) {
   function handleClick(e, d) {
     popupState.close()
 
-    if (currentStream) {
-      currentStream.getTracks().forEach(function(track) {
-        track.stop()
-      })
-    }
+    currentStream.getVideoTracks().forEach((track)=>
+      track.stop() || currentStream.removeTrack(track)
+    )
+    
     const deviceId = d?.deviceId
-    store.dispatch(slices.users.actions.updateMeConstraintVideo(d ? {deviceId} : null))
+    const label = d?.label
+    store.dispatch(slices.users.actions.updateMeConstraintVideo(d ? {deviceId, label} : null))
   }
 }
 
 export function createRootSX(theme, sx, params) {
+  const { variant } = params
   const style = _.merge(
     {
-      
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      border: variant === 'contained' ? '1px solid #eee' : 'none',
+
+      '& .MuiButtonBase-root': {
+        width: '100%',
+        fontSize: '1.2rem',
+      },
+      '& .label': {
+        flex: 1,
+        fontSize: '0.85rem',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+      },
+
+      '& .fa-times': {
+        fontSize: '50%',
+        position: 'absolute',
+        right: '-4px',
+        bottom: '0px',
+        zIndex: 1,
+      },
     },
     typeof sx === 'function' ? sx(theme) : sx
   )

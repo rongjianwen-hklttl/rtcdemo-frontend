@@ -15,6 +15,7 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 
 import MessageList from './MessageList'
+import MessageListFooter from './MessageListFooter'
 
 export default function RightSidebar(props) {
   const { sx } = props
@@ -22,7 +23,6 @@ export default function RightSidebar(props) {
   const hidden = useSelector((state)=>state.settings.rightSidebar.hidden)
   const currentTab = useSelector((state)=>state.settings.currentTab)
 
-  const { roomName, userName } = useParams()
   const { store, slices } = useStore()
 
   const theme = useTheme()
@@ -36,6 +36,7 @@ export default function RightSidebar(props) {
   return (
     <Box sx={rootSX}>
       <MessageList />
+      <MessageListFooter />
     </Box>
   )
 }
@@ -49,14 +50,14 @@ export function createRootSX(theme, sx, params) {
       display: isMobile && currentTab !== 'rightSidebar' ? 'none' : 
         (hidden ? 'none' : 'flex'),
       flexDirection: 'column',
-      padding: isMobile ? 0 : '0 0.5rem 0 0.5rem',
+      padding: isMobile ? 0 : '0.5rem',
       width: isMobile ? '100%' : '20rem',
       maxWidth: isMobile ? '100%' : '20rem',
       height: isMobile ? '100%' : 'auto',
       position: 'relative',
       //backgroundColor: '#eee',
       flex: 1,
-      boxShadow: '-2px 0px 2px 0px #f2f2f2',
+      boxShadow: theme.rightSidebar.boxShadow,
     },
     typeof sx === 'function' ? sx(theme) : sx
   )

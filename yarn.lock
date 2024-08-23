@@ -5742,6 +5742,11 @@ at-least-node@^1.0.0:
   resolved "https://registry.yarnpkg.com/at-least-node/-/at-least-node-1.0.0.tgz#602cd4b46e844ad4effc92a8011a3c46e0238dc2"
   integrity sha512-+q/t7Ekv1EDY2l6Gda6LLiX14rU9TV20Wa3ofeQmwPFZbOMo9DXrLbOjFaaclkXKWidIaopwAObQDqwWtGUjqg==
 
+audiomotion-analyzer@^4.5.0:
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/audiomotion-analyzer/-/audiomotion-analyzer-4.5.0.tgz#6f575b3e704a953b6cf6f25f942c1f335675894c"
+  integrity sha512-qnmB8TSbrxYkTbFgsQeeym0Z/suQx4c0jFg9Yh5+gaPw6J4AFLdfFpagdnDbtNEsj6K7BntgsC3bkdut5rxozg==
+
 autoprefixer-stylus@latest:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/autoprefixer-stylus/-/autoprefixer-stylus-1.0.0.tgz#8631f47aabf34b57df66eb9c3a9a3c7ca893c239"

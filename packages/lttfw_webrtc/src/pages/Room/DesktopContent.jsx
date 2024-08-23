@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton'
 
 import LeftSidebar from './LeftSidebar'
 import RightSidebar from './RightSidebar'
-import VideoChatContainer from './VideoChatContainer'
+import VideoChatRoot from './VideoChatRoot'
 
 export default function DesktopContent(props) {
   const { sx } = props
@@ -24,7 +24,7 @@ export default function DesktopContent(props) {
   return (
     <Box sx={rootSX}>
       <LeftSidebar />
-      <VideoChatContainer />
+      <VideoChatRoot />
       <RightSidebar />
     </Box>
   )

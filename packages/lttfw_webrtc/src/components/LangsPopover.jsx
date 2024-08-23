@@ -25,6 +25,7 @@ export default function LangsPopover(props) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const lang = useSelector((state)=>state.settings.lang)
 
+  const { t, i18n } = useTranslation()
   const { store, slices } = useStore()
   const theme = useTheme()
   const isMobile = useMobile()
@@ -64,8 +65,10 @@ export default function LangsPopover(props) {
               name="radio-buttons-group"
               onChange={handleLangChange}
             >
-              <FormControlLabel value="zh_hk" control={<Radio />} label="繁中" />
-              <FormControlLabel value="en_hk" control={<Radio />} label="English" />
+              <FormControlLabel value="en_hk" control={<Radio />} label={t('label-lang-en')} />
+              <FormControlLabel value="zh_hk" control={<Radio />} label={t('label-lang-tc')} />
+              <FormControlLabel value="zh_cn" control={<Radio />} label={t('label-lang-sc')} />
+              <FormControlLabel value="ja_jp" control={<Radio />} label={t('label-lang-jp')} />
             </RadioGroup>
           </FormControl>
         </Box>
@@ -79,10 +82,12 @@ export default function LangsPopover(props) {
     const lang = e.target.value
     localStorage.setItem('lang', lang)
 
+    i18n.changeLanguage(lang)
+
     store.dispatch(slices.settings.actions.set({
       key: 'lang',
       value: lang,
-    }))    
+    })) 
   }
 }
 

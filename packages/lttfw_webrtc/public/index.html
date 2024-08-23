@@ -2,7 +2,17 @@
 <html lang="en">
 <head>
 <title><%= htmlWebpackPlugin.options.title %></title>
+<link rel="icon" href="/assets/images/cropped-favicon-1-32x32.png" sizes="32x32" />
+<link rel="icon" href="/assets/images/cropped-favicon-1-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="/assets/images/cropped-favicon-1-180x180.png" />
+<meta name="msapplication-TileImage" content="/assets/images/cropped-favicon-1-270x270.png" />
+<link rel="icon" href="/assets/images/cropped-favicon-1-270x270.png" />
+<meta charset="UTF-8" />
 <style>
+  @font-face {
+    font-family: 'Noto Sans CJK';
+    src: url("/assets/fonts/NotoSansCJKhk-Regular.otf") format("opentype");
+  }
   :root {
     --app-height: 100%;
   }
@@ -27,7 +37,6 @@
     overflow-y: hidden;
     display: flex;
     flex-direction: column;
-    background-color: #fbfbfb;
   }
  
   .loading {
@@ -89,8 +98,9 @@
   .MuiDialogTitle-root, 
   .MuiDialogContent-root,
   .MuiDialogActions-root,
-  .MuiButtonBase-root {
-    font-family: 'Noto Sans TC' !important;
+  .MuiButtonBase-root,
+  .MuiTypography-root {
+    font-family: 'Noto Sans CJK' !important;
   }
 
   .select2-container.select2-container--open {

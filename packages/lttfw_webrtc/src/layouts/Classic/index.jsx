@@ -39,6 +39,9 @@ export function createRootSX(theme, sx, params) {
       display: 'flex',
       flexDirection: 'column',
       minHeight: 0,
+
+      color: theme.main.color,
+      backgroundColor: theme.main.bgColor,
     },
     typeof sx === 'function' ? sx(theme) : sx
   )

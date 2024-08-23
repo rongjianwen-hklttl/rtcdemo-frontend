@@ -30,7 +30,7 @@ export default function Login(props) {
   const { roomName: defaultRoomName, userName: defaultUserName } = useParams()
   const { store, slices } = useStore()
   const navigate = useNavigate()
-  const ws = useSignal()
+  const { ws } = useSignal()
   const { t } = useTranslation()
   const generator = new AvatarGenerator()
   

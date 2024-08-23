@@ -17,48 +17,50 @@ import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
 import Menu from '@mui/material/Menu'
 import MenuItem from '@mui/material/MenuItem'
+import Input from '@mui/material/Input'
 import Radio from '@mui/material/Radio'
 
-import { getUserMedia, gotStream } from './InitMobileStream'
+import DeviceLabel from './DeviceLabel'
 
 export default function VideoToggler(props) {
-  const { sx } = props
+  const { sx, variant, useLabel } = props
 
   const popupState = usePopupState({ variant: 'popover', popupId: 'videoSelector' })
-  const devices = useSelector((state)=>state.devices.video)
   const constraintVideo = useSelector((state)=>state.users.me.constraints?.video)
-  const constraintAudio = useSelector((state)=>state.users.me.constraints?.audio)
-  const currentStream = useSelector((state)=>state.users.me.stream)
-  const currentPeerId = useSelector((state)=>state.users.me.peerId)
   const currentRoomName = useSelector((state)=>state.users.me.roomName)
   const currentUserName = useSelector((state)=>state.users.me.userName)
 
   const { store, slices } = useStore()
-  const ws = useSignal()
+  const { ws } = useSignal()
 
   const theme = useTheme()
   const isMobile = useMobile()
   const rootSX = createRootSX(theme, sx, {
     isMobile,
+    variant,
+    useLabel,
   })
 
   return (
     <Box sx={rootSX}>
-      <IconButton variant="contained" {...bindTrigger(popupState)}>
-        { constraintVideo == 'none' && <i className="fa-solid fa-times" /> }
-        <i className="fa-solid fa-camera" />
+      <IconButton disableRipple={true} variant="contained" {...bindTrigger(popupState)}>
+        <Box sx={{position: 'relative'}}>
+          { !constraintVideo && <i className="fa-solid fa-times" /> }
+          <i className="fa-solid fa-camera" />
+        </Box>
+        { useLabel && <DeviceLabel className='label' deviceType='video' deviceId={constraintVideo} /> }
       </IconButton>
       <Menu {...bindMenu(popupState)}>
-        <MenuItem onClick={(e)=>handleClick(e, 'user', constraintAudio)}>
+        <MenuItem onClick={(e)=>handleClick(e, 'user')}>
           <Radio name="video" disableRipple={true} checked={constraintVideo == 'user'} />
           <span>Front camera</span>
         </MenuItem>
-        <MenuItem onClick={(e)=>handleClick(e, 'environment', constraintAudio)}>
+        <MenuItem onClick={(e)=>handleClick(e, 'environment')}>
           <Radio name="video" disableRipple={true} checked={constraintVideo == 'environment'} />
           <span>Back camera</span>
         </MenuItem>
-        <MenuItem onClick={(e)=>handleClick(e, 'none', constraintAudio)}>
-          <Radio name="video" disableRipple={true} checked={constraintVideo == 'none'} />
+        <MenuItem onClick={(e)=>handleClick(e, false)}>
+          <Radio name="video" disableRipple={true} checked={_.isEmpty(constraintVideo)} />
           <span>None</span>
         </MenuItem>
       </Menu>
@@ -68,25 +70,37 @@ export default function VideoToggler(props) {
   function handleClick(e, facingMode, enableAudio) {
     popupState.close()
 
-    if (currentStream) {
-      currentStream.getTracks().forEach(function(track) {
-        track.stop()
-      })
-    }
-
-    getUserMedia(store, slices, ws, currentRoomName, currentPeerId, facingMode, enableAudio)
+    store.dispatch(slices.users.actions.updateMeConstraintVideo(facingMode))
   }
 }
 
 export function createRootSX(theme, sx, params) {
+  const { variant } = params
   const style = _.merge(
     {
+      display: 'flex',
+      flexDirection: 'row',
+      alignItems: 'center',
+      border: variant === 'contained' ? '1px solid #eee' : 'none',
+
+      '& .MuiButtonBase-root': {
+        width: '100%',
+        fontSize: '1.2rem',
+      },
+      '& .label': {
+        flex: 1,
+        fontSize: '0.85rem',
+        whiteSpace: 'nowrap',
+        textOverflow: 'ellipsis',
+        overflow: 'hidden',
+      },
+
       '& .fa-times': {
         fontSize: '50%',
         position: 'absolute',
-        right: '6px',
-        color: 'white',
-        bottom: '5px',
+        right: '-4px',
+        bottom: '0px',
+        zIndex: 1,
       },
     },
     typeof sx === 'function' ? sx(theme) : sx

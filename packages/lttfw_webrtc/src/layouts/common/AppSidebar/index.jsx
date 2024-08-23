@@ -30,20 +30,9 @@ export default function AppSidebar(props) {
 
   return (
     <Box sx={rootSX} className="appSidebar">
-      <Box sx={optSX}>
-        <IconButton onClick={startSharingVideo}><i className="fa-solid fa-display" /></IconButton>
-        <IconButton onClick={startSendingVideo}><i className="fa-solid fa-share-nodes"/></IconButton>
-      </Box>
+     
     </Box>
   )
-
-  function startSharingVideo() {
-    store.dispatch(slices.sharingVideo.actions.startSharingVideo())
-  }
-
-  function startSendingVideo() {
-    
-  }
 }
 
 export function createRootSX(theme, sx, params) {

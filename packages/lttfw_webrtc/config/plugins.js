@@ -12,7 +12,7 @@ module.exports = webpackMerge(plugins, {
   plugins: [
     new HtmlWebpackPlugin({
       title: 'LTT - RTC DEMO',
-      favicon: `${paths.public}/assets/icons/favicon.ico`,
+      //favicon: `${paths.public}/assets/icons/favicon.ico`,
       template: `${paths.public}/index.html`,
       filename: 'index.html',
       inject: 'body',

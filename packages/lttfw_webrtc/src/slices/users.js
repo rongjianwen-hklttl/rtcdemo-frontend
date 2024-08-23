@@ -20,6 +20,22 @@ export default (initialState) => ({
       state.list = {}
       state.me = {}
     },
+    resetPeerUsersStatus(state, action) {
+      console.debug('dispatch: resetPeerUsersStatus....')
+      const { status, refreshStream } = action.payload
+
+      if (typeof status !== 'undefined') {
+        for (let i in state.list) {
+          state.list[i].status = status 
+        }
+      }
+
+      if (typeof refreshStream !== 'undefined') {
+        for (let i in state.list) {
+          state.list[i].refreshStream = refreshStream 
+        }
+      }
+    },
     setList(state, action) {
       const { payload } = action
       state.list = payload

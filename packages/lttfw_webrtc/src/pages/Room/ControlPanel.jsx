@@ -7,15 +7,18 @@ import { useTheme } from '@mui/material'
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
 import IconButton from '@mui/material/IconButton'
+import Stack from '@mui/material/Stack'
+
+import Controls from './Controls'
+
+import { mobileAndTabletCheck } from '../../helpers'
 
 export default function ControlPanel(props) {
   const { sx } = props
 
   const hidden = useSelector((state)=>state.settings.controlPanel.hidden)
   const currentTab = useSelector((state)=>state.settings.currentTab)
-  
-  const sharingVideoId = useSelector((state)=>state.sharingVideo.id)
- 
+
   const theme = useTheme()
   const isMobile = useMobile()
   const rootSX = createRootSX(theme, sx, {
@@ -24,9 +27,11 @@ export default function ControlPanel(props) {
     hidden,
   })
 
+  const isMobileDevice = mobileAndTabletCheck()
+
   return (
     <Box sx={rootSX}>
-      ControlPanel
+      <Controls />
     </Box>
   )
 }

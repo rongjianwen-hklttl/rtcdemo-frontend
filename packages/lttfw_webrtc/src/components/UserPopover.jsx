@@ -35,11 +35,12 @@ export default function UserPopover(props) {
   const [anchorEl, setAnchorEl] = React.useState(null)
   const [dialogOpen, setDialogOpen] = React.useState(false)
   
-  const me = useSelector((state)=>state.users.me)
+  const currentStream = useSelector((state)=>state.users.me.stream)
+  const currentRoomName = useSelector((state)=>state.users.me.roomName)
+  const currentUserName = useSelector((state)=>state.users.me.userName)
 
-  const ws = useSignal()
+  const { ws } = useSignal()
   const navigate = useNavigate()
-  const { roomName, userName } = useParams()
   const { store, slices } = useStore()
   const theme = useTheme()
   const isMobile = useMobile()
@@ -59,21 +60,15 @@ export default function UserPopover(props) {
   const id = open ? 'user-popover' : undefined
 
   const menuItems = [{
-    label: 'Share',
-    icon: 'fa-solid fa-share-nodes',
-    click: function(e, o) {
-      setAnchorEl(null)
-      setDialogOpen(true)
-      copy(window.location.protocol+"//"+window.location.hostname+"/session/"+roomName)
-    }
-  },{
     label: 'Exit',
     icon: 'fa-solid fa-right-from-bracket',
     click: function(e, o) {
       setAnchorEl(null)
       ws.close()
-      const tracks = me.stream.getTracks()
-      tracks.forEach(track => track.stop())
+      if (currentStream) {
+        const tracks = currentStream.getTracks()
+        tracks.forEach(track => track.stop())
+      }
       setTimeout(()=>{
         navigate('/')
       }, 100)
@@ -82,14 +77,14 @@ export default function UserPopover(props) {
   return (
     <Box sx={rootSX}>
       <Button onClick={handleClick}>
-        { !_.isEmpty(window.location.search) && <Avatar alt={userName} src={"https://avataaars.io/"+window.location.search} /> }
+        { !_.isEmpty(window.location.search) && <Avatar alt={currentUserName} src={"https://avataaars.io/"+window.location.search} /> }
       </Button>
       <Dialog
         open={dialogOpen}
         keepMounted
         onClose={handleDialogClose}
       >
-        <DialogTitle>Copy the shareable link to clipboard successfully.</DialogTitle>
+        <DialogTitle>Copy the share link to clipboard successfully.</DialogTitle>
         <DialogActions>
           <Button onClick={handleDialogClose}>Close</Button>
         </DialogActions>
@@ -130,6 +125,7 @@ export default function UserPopover(props) {
 export function createRootSX(theme, sx, params) {
   const style = _.merge(
     {
+      
     },
     typeof sx === 'function' ? sx(theme) : sx
   )

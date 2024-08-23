@@ -7,9 +7,10 @@ export default function SignalProvider(props) {
   const { children } = props
 
   const { store, slices } = useStore()
-  const ws = create_socket(store, slices)
+  const [ws, initWs] = React.useState(create_socket(store, slices))
+
   return (
-    <SignalContext.Provider value={ws}>{children}</SignalContext.Provider>
+    <SignalContext.Provider value={{ws, initWs}}>{children}</SignalContext.Provider>
   )
 }
 

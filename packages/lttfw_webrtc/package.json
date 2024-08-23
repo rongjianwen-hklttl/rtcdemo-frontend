@@ -19,6 +19,7 @@
     "@lttfw/ckeditor5": "^1.0.0",
     "@lttfw/core": "^0.1.0",
     "@lttfw/ui": "^0.1.0",
+    "audiomotion-analyzer": "^4.5.0",
     "dotenv": "^16.4.5",
     "peerjs": "^1.5.4",
     "random-avatar-generator": "^2.0.0",

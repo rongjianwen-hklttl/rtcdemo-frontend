@@ -6,6 +6,7 @@ import { v4 as uuidv4 } from 'uuid'
 import clsx from 'clsx'
 import _ from 'lodash'
 
+import { useTranslation } from 'react-i18next'
 import { useStore } from '@lttfw/core/src/providers/StoreProvider'
 
 import { useMobile } from '@lttfw/core/src/helpers'
@@ -22,6 +23,7 @@ export default function BottomNavigation(props) {
   const { store, slices } = useStore()
   const currentTab = useSelector((state)=>state.settings.currentTab)
 
+  const { t } = useTranslation()
   const theme = useTheme()
   const isMobile = useMobile()
   const rootSX = createRootSX(theme, sx, {
@@ -34,25 +36,6 @@ export default function BottomNavigation(props) {
           showLabels
           value={currentTab}
           onChange={(event, newValue) => {
-            /*
-            switch(newValue) {
-              case 0: {
-                store.dispatch(slices.settings.actions.showOnly('leftSidebar'))
-                break
-              }
-              case 1: {
-                store.dispatch(slices.settings.actions.showOnly('videoChat'))
-                break
-              }
-              case 2: {
-                store.dispatch(slices.settings.actions.showOnly('rightSidebar'))
-                break
-              }
-              case 3: {
-                store.dispatch(slices.settings.actions.showOnly('controlPanel'))
-                break
-              }
-            } */
             store.dispatch(slices.settings.actions.set({
               key: 'currentTab',
               value: newValue,
@@ -64,10 +47,10 @@ export default function BottomNavigation(props) {
             width: '100%',
           }}
         >
-          <BottomNavigationAction label="Users" value="leftSidebar" icon={<i className="fa-solid fa-users" />} />
-          <BottomNavigationAction label="WaChord" value="videoChat" icon={<i className="fa-solid fa-video" />} />
-          <BottomNavigationAction label="Messages" value="rightSidebar" icon={<i className="fa-solid fa-comments" />} />
-          <BottomNavigationAction label="Control" value="controlPanel" icon={<i className="fa-solid fa-wrench" />} />
+          <BottomNavigationAction label={t('label-wachord')} value="videoChat" icon={<i className="fa-solid fa-video" />} />
+          <BottomNavigationAction label={t('label-users')} value="leftSidebar" icon={<i className="fa-solid fa-users" />} />
+          <BottomNavigationAction label={t('label-messages')} value="rightSidebar" icon={<i className="fa-solid fa-comments" />} />
+          <BottomNavigationAction label={t('label-control')} value="controlPanel" icon={<i className="fa-solid fa-wrench" />} />
         </MuiBottomNavigation>
     </Box>
   )

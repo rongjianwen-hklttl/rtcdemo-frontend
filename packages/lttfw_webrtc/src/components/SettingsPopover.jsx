@@ -59,18 +59,10 @@ export default function SettingsPopover(props) {
           horizontal: 'left',
         }}
       >
-        <Settings />
+        <Settings handleClose={handleClose} />
       </Popover>
     </Box>
   )
-  
-  function showModule(e, moduleName) {
-    store.dispatch(slices.settings.actions.setSub({
-      key: moduleName,
-      subKey: 'hidden',
-      value: !e.target.checked,
-    }))
-  }
 }
 
 export function createRootSX(theme, sx, params) {

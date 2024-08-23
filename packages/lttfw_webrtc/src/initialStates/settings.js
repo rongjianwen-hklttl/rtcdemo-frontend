@@ -1,7 +1,11 @@
-const lang = localStorage.getItem('lang')
+import {
+  getCurrentLang,
+  getCurrentThemeName
+} from '../helpers'
 
 export default {
-  lang: lang ? lang : 'zh_hk',
+  lang: getCurrentLang(),
+  themeName: getCurrentThemeName(),
   leftSidebar: {
     hidden: false,
   },
@@ -14,5 +18,7 @@ export default {
   controlPanel: {
     hidden: false,
   },
+  debugMode: false,
   currentTab: 'videoChat',
+  currentLsTab: 'lsUsers',
 }

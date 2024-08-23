@@ -5,7 +5,8 @@ const header = {
   bgColor: '#848484',
   color: '#fff',
   height: '3rem',
-  
+  background: 'linear-gradient(#f2f2f2, #bfbfbf)',
+
   nav: {
     bgColor: colors.blue.main,
     color: colors.white.main,
